@@ -22,13 +22,22 @@ public class ColliderDetector : MonoBehaviour
 	{
 
 	
-		if (cd.gameObject.tag.Equals ("MusicInstrument")) {
+		if (cd.gameObject.tag.Equals ("Guitar")) {
 		
-			Object[] clips = Resources.LoadAll ("Sounds");
+			Object[] clips = Resources.LoadAll ("Sounds2/Guitar");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			AudioSource.PlayClipAtPoint (sound, Camera.main.transform.position);
 			Destroy (cd.gameObject);
-			Destroy (this.gameObject);
+//			Destroy (this.gameObject);
+
+		}
+		else if (cd.gameObject.tag.Equals ("Violin")) {
+
+			Object[] clips = Resources.LoadAll ("Sounds2/Violin");
+			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
+			AudioSource.PlayClipAtPoint (sound, Camera.main.transform.position);
+			Destroy (cd.gameObject);
+			//			Destroy (this.gameObject);
 
 		}
 

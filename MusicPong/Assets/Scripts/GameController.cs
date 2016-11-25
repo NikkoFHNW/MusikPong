@@ -17,7 +17,8 @@ public class GameController : MonoBehaviour
 //	public Text leftTxt;
 	TapGesture tg;
 	public GameObject musicNote;
-	public GameObject musicInstrument;
+	public GameObject mViolin;
+	public GameObject mGuitar;
 
 	//Variables for calculations and management
 	private bool isTap;
@@ -163,7 +164,7 @@ public class GameController : MonoBehaviour
 					if (go.tag.Equals ("MusicNote")) {
 						mNotes.Remove (go);
 						Destroy (go);
-					} else if (go.tag.Equals ("MusicInstrument")) {
+					} else if (go.tag.Equals ("Guitar")|| go.tag.Equals("Violin")) {
 						
 						mInstruments.Remove (go);
 						Destroy (go, timeToWait);
@@ -198,8 +199,21 @@ public class GameController : MonoBehaviour
 //				leftTxt.gameObject.SetActive (false);
 //				rightTxt.gameObject.SetActive (true);
 
+				int rand = UnityEngine.Random.Range (0, 2);
 
-				GameObject tO = Instantiate (musicInstrument, touchedPos, Quaternion.identity) as GameObject;
+				GameObject tO =null;
+				switch (rand) {
+				case 0:
+					tO = Instantiate (mGuitar, touchedPos, Quaternion.identity) as GameObject;
+					break;
+				case 1:
+					tO = Instantiate (mViolin, touchedPos, Quaternion.identity) as GameObject;
+					break;
+				}
+
+
+//				GameObject tO = Instantiate (mGuitar, touchedPos, Quaternion.identity) as GameObject;
+//				GameObject tO = Instantiate (mViolin, touchedPos, Quaternion.identity) as GameObject;
 				mInstruments.Add (tO);
 			}
 			isTap = false;
