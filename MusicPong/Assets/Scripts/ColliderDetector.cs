@@ -40,6 +40,15 @@ public class ColliderDetector : MonoBehaviour
 			//			Destroy (this.gameObject);
 
 		}
+		else if (cd.gameObject.tag.Equals ("Piano")) {
+
+			Object[] clips = Resources.LoadAll ("Sounds2/Piano");
+			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
+			AudioSource.PlayClipAtPoint (sound, Camera.main.transform.position);
+			Destroy (cd.gameObject);
+			//			Destroy (this.gameObject);
+
+		}
 
 
 
