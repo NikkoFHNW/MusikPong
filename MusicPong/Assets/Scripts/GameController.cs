@@ -13,8 +13,8 @@ public class GameController : MonoBehaviour
 
 
 	//References to needed Unity Objects
-//	public Text rightTxt;
-//	public Text leftTxt;
+	//	public Text rightTxt;
+	//	public Text leftTxt;
 	TapGesture tg;
 	public GameObject musicNote;
 	public GameObject mViolin;
@@ -35,6 +35,10 @@ public class GameController : MonoBehaviour
 	public float timeToWait;
 
 
+	private Dictionary<GameObject,System.DateTime> mFadeOut;
+	public float fadeDegree;
+
+
 	/*Unity handler Methods
 	 * 
 	 * 
@@ -47,15 +51,16 @@ public class GameController : MonoBehaviour
 	void Start ()
 	{
 		
-		getVertMiddle ();
-		getRightEdge ();
+		GetVertMiddle ();
+		GetRightEdge ();
 
-//		rightTxt.gameObject.SetActive (false);
-//		leftTxt.gameObject.SetActive (false);
 		isTap = false;
 		mNotes = new List<GameObject> ();
 		mInstruments = new List<GameObject> ();
 		toDelete = new List<GameObject> ();
+
+	
+		mFadeOut = new Dictionary<GameObject,System.DateTime> ();
 	}
 
 	private void OnEnable ()
@@ -79,6 +84,7 @@ public class GameController : MonoBehaviour
 	{
 		TapKoordinator ();
 		NoteMover ();
+		Fader ();
 		GOCleaner ();
 	}
 
@@ -93,14 +99,14 @@ public class GameController : MonoBehaviour
 	 * 
 	 * 
 	 * */
-	private void getVertMiddle ()
+	private void GetVertMiddle ()
 	{
 
 		var temp = Camera.main.ViewportToWorldPoint (new Vector3 (0.5f, 0.5f, 0f));
 		vertMiddle = temp.x;
 	}
 
-	private void getRightEdge ()
+	private void GetRightEdge ()
 	{
 		var temp = Camera.main.ViewportToWorldPoint (new Vector3 (1f, 0.5f, 0f));
 		rightEdge = temp.x;
@@ -113,6 +119,9 @@ public class GameController : MonoBehaviour
 		isTap = true;
 
 		touchedPos = Camera.main.ScreenToWorldPoint (new Vector2 (gesture.ScreenPosition.x, gesture.ScreenPosition.y));
+
+		Touch[] t = Input.touches;
+		int x = t.Length;
 
 	}
 
@@ -137,22 +146,15 @@ public class GameController : MonoBehaviour
 
 	private void GOCleaner ()
 	{
+		toDelete=new List<GameObject> ();
 		if (mNotes.Count > 0) {
-			toDelete = new List<GameObject> ();
+//			toDelete = new List<GameObject> ();
 			foreach (GameObject go in mNotes) {
 				if (go != null) {
 					if (go.transform.position.x >= rightEdge) {
 						toDelete.Add (go);
 					}
 			
-				}
-			}
-		}
-
-		if (mInstruments.Count > 0) {
-			foreach (GameObject go in mInstruments) {
-				if (go != null) {
-					toDelete.Add (go);
 				}
 			}
 		}
@@ -165,13 +167,11 @@ public class GameController : MonoBehaviour
 					if (go.tag.Equals ("MusicNote")) {
 						mNotes.Remove (go);
 						Destroy (go);
-					} else if (go.tag.Equals ("Guitar")|| go.tag.Equals("Violin") || go.tag.Equals("Piano")) {
-						
-						mInstruments.Remove (go);
-						Destroy (go, timeToWait);
-
-
-					}
+					} 
+//					else if (go.tag.Equals ("Guitar") || go.tag.Equals ("Violin") || go.tag.Equals ("Piano")) {
+//
+//
+//					}
 
 				}
 			}
@@ -185,9 +185,8 @@ public class GameController : MonoBehaviour
 
 		if (isTap) {
 
-			if (isInLeft (touchedPos)) {
-//				leftTxt.gameObject.SetActive (true);
-//				rightTxt.gameObject.SetActive (false);
+			if (IsInLeft (touchedPos)) {
+
 
 				GameObject tO = Instantiate (musicNote, touchedPos, Quaternion.identity) as GameObject;
 				mNotes.Add (tO);
@@ -196,13 +195,12 @@ public class GameController : MonoBehaviour
 			}
 
 
-			if (isInRight (touchedPos)) {
-//				leftTxt.gameObject.SetActive (false);
-//				rightTxt.gameObject.SetActive (true);
+			if (IsInRight (touchedPos)) {
+
 
 				int rand = UnityEngine.Random.Range (0, 3);
 
-				GameObject tO =null;
+				GameObject tO = null;
 				switch (rand) {
 				case 0:
 					tO = Instantiate (mGuitar, touchedPos, Quaternion.identity) as GameObject;
@@ -216,8 +214,7 @@ public class GameController : MonoBehaviour
 				}
 
 
-//				GameObject tO = Instantiate (mGuitar, touchedPos, Quaternion.identity) as GameObject;
-//				GameObject tO = Instantiate (mViolin, touchedPos, Quaternion.identity) as GameObject;
+
 				mInstruments.Add (tO);
 			}
 			isTap = false;
@@ -228,8 +225,58 @@ public class GameController : MonoBehaviour
 
 
 
+	private void Fader ()
+	{
+		if (mInstruments.Count > 0) {
+			foreach (GameObject go in mInstruments) {
+				if (go != null) {
+					SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
+					if (!(sr.color.a >=1)) {
+						Color c = sr.color;
+						c.a += fadeDegree * Time.deltaTime / 255f;
+						sr.color = c;
+					} else {
+						mFadeOut.Add (go, System.DateTime.Now);
+					}
+				}
+			}
+		}
 
-	private bool isInLeft (Vector2 v2)
+		if (mFadeOut.Count > 0) {
+			
+			foreach (GameObject go in mFadeOut.Keys) {
+				if (go != null) {
+					if (mInstruments.Contains (go)) {
+						mInstruments.Remove (go);
+					}
+					System.TimeSpan diff = System.DateTime.Now-mFadeOut [go];
+					if (diff.Seconds>=timeToWait) {
+						SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
+						if (!(sr.color.a <= 0)) {
+							Color c = sr.color;
+							c.a -= fadeDegree * Time.deltaTime / 255f;
+							sr.color = c;
+						} else {
+//						mInstruments.Remove (go);
+							Destroy (go);
+						}
+					}
+				}
+			}
+
+
+		}
+		
+	}
+
+
+
+
+
+
+
+
+	private bool IsInLeft (Vector2 v2)
 	{
 		float vm = vertMiddle;
 		if (v2.x < vm)
@@ -238,7 +285,7 @@ public class GameController : MonoBehaviour
 			return false;
 	}
 
-	private bool isInRight (Vector2 v2)
+	private bool IsInRight (Vector2 v2)
 	{
 
 		float vm = vertMiddle;

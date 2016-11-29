@@ -10,6 +10,7 @@ public class ColliderDetector : MonoBehaviour
 	public GameObject particleSys4;
 
 	private static float particleTime = 15;
+	private static float bufferTime = 0.5f;
 
 	// Use this for initialization
 	void Start ()
@@ -35,7 +36,10 @@ public class ColliderDetector : MonoBehaviour
 			Object[] clips = Resources.LoadAll ("Sounds2/Guitar");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			playCollision (sound);
-			Destroy (cd.gameObject);
+//			StartCoroutine(FadeOut(cd.gameObject));
+//			Destroy (cd.gameObject,5);
+		
+			Destroy (cd.gameObject,bufferTime);
 
 //			Destroy (this.gameObject);
 
@@ -45,7 +49,10 @@ public class ColliderDetector : MonoBehaviour
 			Object[] clips = Resources.LoadAll ("Sounds2/Violin");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			playCollision (sound);
-			Destroy (cd.gameObject);
+//			StartCoroutine(FadeOut(cd.gameObject));
+//			Destroy (cd.gameObject,5);
+
+			Destroy (cd.gameObject,bufferTime);
 
 //			Destroy (this.gameObject);
 
@@ -55,7 +62,10 @@ public class ColliderDetector : MonoBehaviour
 			Object[] clips = Resources.LoadAll ("Sounds2/Piano");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			playCollision (sound);
-			Destroy (cd.gameObject);
+//			StartCoroutine(FadeOut(cd.gameObject));
+//			Destroy (cd.gameObject,5);
+
+			Destroy (cd.gameObject,bufferTime);
 
 //			Destroy (this.gameObject);
 
@@ -87,6 +97,28 @@ public class ColliderDetector : MonoBehaviour
 
 		AudioSource.PlayClipAtPoint (sound, Camera.main.transform.position);
 		Destroy (go, particleTime);
+	}
+
+	IEnumerator FadeOut(GameObject go){
+		if (go != null) {
+
+			SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
+			if (sr != null) {
+				if (sr != null) {
+					while (sr.color.a > 0) {
+
+
+						Color c = sr.color;
+						c.a -= Time.deltaTime / 0.5f;
+						sr.color = c;
+						yield return null;
+						if (sr == null)
+							break;
+
+					}
+				}
+			}
+		}
 	}
 
 }
