@@ -13,17 +13,16 @@ public class GameController : MonoBehaviour
 
 
 	//References to needed Unity Objects
-	//	public Text rightTxt;
-	//	public Text leftTxt;
-	TapGesture tg;
+
+
 	public GameObject musicNote;
 	public GameObject mViolin;
 	public GameObject mGuitar;
 	public GameObject mPiano;
+	public GameObject mTrumpet;
+	public GameObject mSax;
 
 	//Variables for calculations and management
-	private bool isTap;
-	private Vector2 touchedPos;
 	private float vertMiddle;
 	private float rightEdge;
 	private List<GameObject> mNotes;
@@ -37,6 +36,11 @@ public class GameController : MonoBehaviour
 
 	private Dictionary<GameObject,System.DateTime> mFadeOut;
 	public float fadeDegree;
+
+
+	PressGesture pressG;
+	private bool isPressing = false;
+	private Vector2 pressPos;
 
 
 	/*Unity handler Methods
@@ -54,7 +58,6 @@ public class GameController : MonoBehaviour
 		GetVertMiddle ();
 		GetRightEdge ();
 
-		isTap = false;
 		mNotes = new List<GameObject> ();
 		mInstruments = new List<GameObject> ();
 		toDelete = new List<GameObject> ();
@@ -65,8 +68,10 @@ public class GameController : MonoBehaviour
 
 	private void OnEnable ()
 	{
-		tg = GetComponent<TapGesture> ();
-		tg.Tapped += TouchBeganHandler;
+
+		pressG = GetComponent<PressGesture> ();
+		pressG.Pressed += PressHandler;
+
 
 
 	}
@@ -74,17 +79,19 @@ public class GameController : MonoBehaviour
 
 	private void OnDisable ()
 	{
-		tg.Tapped -= TouchBeganHandler;
 
+		pressG.Pressed -= PressHandler;
 
 	}
 
 
 	void FixedUpdate ()
 	{
-		TapKoordinator ();
-		NoteMover ();
-		Fader ();
+
+		StartCoroutine (PressKoordinator ());
+//		PressKoord();
+		StartCoroutine (NoteMoverCoR ());
+		StartCoroutine (FaderCor ());
 		GOCleaner ();
 	}
 
@@ -112,43 +119,14 @@ public class GameController : MonoBehaviour
 		rightEdge = temp.x;
 	}
 
-	private void TouchBeganHandler (object sender, EventArgs e)
-	{
-		var gesture = sender as TapGesture;
 
-		isTap = true;
-
-		touchedPos = Camera.main.ScreenToWorldPoint (new Vector2 (gesture.ScreenPosition.x, gesture.ScreenPosition.y));
-
-		Touch[] t = Input.touches;
-		int x = t.Length;
-
-	}
-
-
-
-	private void NoteMover ()
-	{
-		if (mNotes.Count > 0) {
-			
-
-			foreach (GameObject go in mNotes) {
-				if (go != null) {
-					
-					Vector2 v2 = new Vector2 (go.transform.position.x + noteSpeed * Time.deltaTime, go.transform.position.y);
-					go.transform.position = v2;
-				}
-			}
-		}
-	}
 
 
 
 	private void GOCleaner ()
 	{
-		toDelete=new List<GameObject> ();
+		toDelete = new List<GameObject> ();
 		if (mNotes.Count > 0) {
-//			toDelete = new List<GameObject> ();
 			foreach (GameObject go in mNotes) {
 				if (go != null) {
 					if (go.transform.position.x >= rightEdge) {
@@ -168,10 +146,6 @@ public class GameController : MonoBehaviour
 						mNotes.Remove (go);
 						Destroy (go);
 					} 
-//					else if (go.tag.Equals ("Guitar") || go.tag.Equals ("Violin") || go.tag.Equals ("Piano")) {
-//
-//
-//					}
 
 				}
 			}
@@ -179,99 +153,6 @@ public class GameController : MonoBehaviour
 
 
 	}
-
-	private void TapKoordinator ()
-	{
-
-		if (isTap) {
-
-			if (IsInLeft (touchedPos)) {
-
-
-				GameObject tO = Instantiate (musicNote, touchedPos, Quaternion.identity) as GameObject;
-				mNotes.Add (tO);
-
-
-			}
-
-
-			if (IsInRight (touchedPos)) {
-
-
-				int rand = UnityEngine.Random.Range (0, 3);
-
-				GameObject tO = null;
-				switch (rand) {
-				case 0:
-					tO = Instantiate (mGuitar, touchedPos, Quaternion.identity) as GameObject;
-					break;
-				case 1:
-					tO = Instantiate (mViolin, touchedPos, Quaternion.identity) as GameObject;
-					break;
-				case 2:
-					tO = Instantiate (mPiano, touchedPos, Quaternion.identity) as GameObject;
-					break;
-				}
-
-
-
-				mInstruments.Add (tO);
-			}
-			isTap = false;
-		}
-	}
-
-
-
-
-
-	private void Fader ()
-	{
-		if (mInstruments.Count > 0) {
-			foreach (GameObject go in mInstruments) {
-				if (go != null) {
-					SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
-					if (!(sr.color.a >=1)) {
-						Color c = sr.color;
-						c.a += fadeDegree * Time.deltaTime / 255f;
-						sr.color = c;
-					} else {
-						mFadeOut.Add (go, System.DateTime.Now);
-					}
-				}
-			}
-		}
-
-		if (mFadeOut.Count > 0) {
-			
-			foreach (GameObject go in mFadeOut.Keys) {
-				if (go != null) {
-					if (mInstruments.Contains (go)) {
-						mInstruments.Remove (go);
-					}
-					System.TimeSpan diff = System.DateTime.Now-mFadeOut [go];
-					if (diff.Seconds>=timeToWait) {
-						SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
-						if (!(sr.color.a <= 0)) {
-							Color c = sr.color;
-							c.a -= fadeDegree * Time.deltaTime / 255f;
-							sr.color = c;
-						} else {
-//						mInstruments.Remove (go);
-							Destroy (go);
-						}
-					}
-				}
-			}
-
-
-		}
-		
-	}
-
-
-
-
 
 
 
@@ -294,4 +175,142 @@ public class GameController : MonoBehaviour
 		else
 			return false;
 	}
+
+
+	IEnumerator NoteMoverCoR ()
+	{
+		if (mNotes.Count > 0) {
+
+
+			foreach (GameObject go in mNotes) {
+				if (go != null) {
+
+					Vector2 v2 = new Vector2 (go.transform.position.x + noteSpeed * Time.deltaTime, go.transform.position.y);
+					go.transform.position = v2;
+				}
+			}
+		}
+		yield return null;
+	}
+
+
+
+	IEnumerator FaderCor ()
+	{
+		if (mInstruments.Count > 0) {
+			foreach (GameObject go in mInstruments) {
+				if (go != null) {
+					SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
+					InstrumentInfo info = go.GetComponent<InstrumentInfo> ();
+					if (!(sr.color.a >= 1) && !info.isColliding) {
+						Color c = sr.color;
+						c.a += fadeDegree * Time.deltaTime / 255f;
+						sr.color = c;
+					} else {
+						mFadeOut.Add (go, System.DateTime.Now);
+											}
+				}
+			}
+		}
+
+		if (mFadeOut.Count > 0) {
+
+			foreach (GameObject go in mFadeOut.Keys) {
+				if (go != null) {
+					if (mInstruments.Contains (go)) {
+						mInstruments.Remove (go);
+					}
+					System.TimeSpan diff = System.DateTime.Now - mFadeOut [go];
+					if (diff.Seconds >= timeToWait) {
+						SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
+						if (!(sr.color.a <= 0)) {
+							Color c = sr.color;
+							c.a -= fadeDegree * Time.deltaTime / 255f;
+							sr.color = c;
+						} else {
+							//						mInstruments.Remove (go);
+							Destroy (go);
+						}
+					}
+				}
+			}
+
+
+		}
+		yield return null;
+	}
+
+
+
+	void PressHandler (object sender, EventArgs e)
+	{
+		isPressing = true;
+		pressPos = Camera.main.ScreenToWorldPoint (new Vector2 (pressG.ScreenPosition.x, pressG.ScreenPosition.y));
+	
+	}
+
+
+
+
+	IEnumerator PressKoordinator ()
+	{
+		if (isPressing) {
+	
+			if (IsInLeft (pressPos)) {
+	
+	
+				GameObject tO = Instantiate (musicNote, pressPos, Quaternion.identity) as GameObject;
+				mNotes.Add (tO);
+	
+	
+	
+			}
+	
+	
+			if (IsInRight (pressPos)) {
+	
+	
+				int rand = UnityEngine.Random.Range (0, 5);
+	
+				GameObject tO = null;
+				switch (rand) {
+				case 0:
+					tO = Instantiate (mGuitar, pressPos, Quaternion.identity) as GameObject;
+					break;
+				case 1:
+					tO = Instantiate (mViolin, pressPos, Quaternion.identity) as GameObject;
+					break;
+				case 2:
+					tO = Instantiate (mPiano, pressPos, Quaternion.identity) as GameObject;
+					break;
+				case 3:
+					tO = Instantiate (mTrumpet, pressPos, Quaternion.identity) as GameObject;
+					break;
+				case 4:
+					tO = Instantiate (mSax, pressPos, Quaternion.identity) as GameObject;
+					break;
+				}
+	
+	
+	
+				mInstruments.Add (tO);
+			}
+	
+			cleanPress ();
+		}
+		yield return null;
+	}
+
+
+
+	private void cleanPress ()
+	{
+		isPressing = false;
+	}
+
+
+
+
+
+
 }

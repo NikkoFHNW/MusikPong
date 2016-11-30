@@ -10,7 +10,12 @@ public class ColliderDetector : MonoBehaviour
 	public GameObject particleSys4;
 
 	private static float particleTime = 15;
-	private static float bufferTime = 0.5f;
+	public float fadeDegree;
+	private bool fade=false;
+	private GameObject colInstrument;
+
+
+
 
 	// Use this for initialization
 	void Start ()
@@ -21,63 +26,67 @@ public class ColliderDetector : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		StartCoroutine (FaderCor ());
+//		Fade();
 	}
 
 	void OnTriggerEnter2D (Collider2D cd)
 	{
 
-
+		string tag = cd.gameObject.tag;
 			
-		if (cd.gameObject.tag.Equals ("Guitar")) {
+		if (tag.Equals ("Guitar")) {
 		
 
 
 			Object[] clips = Resources.LoadAll ("Sounds2/Guitar");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			playCollision (sound);
-//			StartCoroutine(FadeOut(cd.gameObject));
-//			Destroy (cd.gameObject,5);
+			prepFadeOut (cd.gameObject);
 		
-			Destroy (cd.gameObject,bufferTime);
 
-//			Destroy (this.gameObject);
 
-		} else if (cd.gameObject.tag.Equals ("Violin")) {
+
+		} else if (tag.Equals ("Violin")) {
 
 
 			Object[] clips = Resources.LoadAll ("Sounds2/Violin");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			playCollision (sound);
-//			StartCoroutine(FadeOut(cd.gameObject));
-//			Destroy (cd.gameObject,5);
+			prepFadeOut (cd.gameObject);
 
-			Destroy (cd.gameObject,bufferTime);
 
-//			Destroy (this.gameObject);
 
-		} else if (cd.gameObject.tag.Equals ("Piano")) {
+
+
+		} else if (tag.Equals ("Piano")) {
 
 
 			Object[] clips = Resources.LoadAll ("Sounds2/Piano");
 			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
 			playCollision (sound);
-//			StartCoroutine(FadeOut(cd.gameObject));
-//			Destroy (cd.gameObject,5);
+			prepFadeOut (cd.gameObject);
 
-			Destroy (cd.gameObject,bufferTime);
 
-//			Destroy (this.gameObject);
 
+		} else if (tag.Equals ("Trumpet")) {
+			Object[] clips = Resources.LoadAll ("Sounds2/Trumpet");
+			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
+			playCollision (sound);
+			prepFadeOut (cd.gameObject);
+		}else if(tag.Equals("Saxophone")){
+			Object[] clips = Resources.LoadAll ("Sounds2/Saxophone");
+			AudioClip sound = (AudioClip)clips [Random.Range (0, clips.Length)];
+			playCollision (sound);
+			prepFadeOut (cd.gameObject);
 		}
-
 
 
 	}
 
 	private void playCollision (AudioClip sound)
 	{
-		GameObject go=null;
+		GameObject go = null;
 		int rand = Random.Range (0, 4);
 		switch (rand) {
 		case 0:
@@ -99,26 +108,46 @@ public class ColliderDetector : MonoBehaviour
 		Destroy (go, particleTime);
 	}
 
-	IEnumerator FadeOut(GameObject go){
-		if (go != null) {
-
-			SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
-			if (sr != null) {
-				if (sr != null) {
-					while (sr.color.a > 0) {
 
 
-						Color c = sr.color;
-						c.a -= Time.deltaTime / 0.5f;
-						sr.color = c;
-						yield return null;
-						if (sr == null)
-							break;
 
-					}
-				}
-			}
-		}
+
+	private void prepFadeOut(GameObject go){
+		go.GetComponent<PolygonCollider2D> ().enabled = false;
+		fade = true;
+		colInstrument = go;
+		SpriteRenderer sr = go.GetComponent<SpriteRenderer> ();
+		Color c = sr.color;
+		c.a = 1;
+		sr.color = c;
+		go.GetComponent<InstrumentInfo> ().isColliding = true;
+
+	
 	}
+
+	IEnumerator FaderCor ()
+	{
+		
+			
+		if (fade && colInstrument!=null) {
+				
+			SpriteRenderer sr = colInstrument.GetComponent<SpriteRenderer> ();
+			if (sr.color.a >= 0) {
+				
+				Color c = sr.color;
+				c.a -= fadeDegree * Time.deltaTime / 255f;
+				sr.color = c;
+			} else {
+				colInstrument.GetComponent<InstrumentInfo> ().isColliding = false;
+				Destroy (colInstrument);
+				colInstrument = null;
+				fade = false;
+			}
+
+		}
+		yield return null;
+	}
+
+
 
 }
