@@ -1,0 +1,123 @@
+Initialize engine version: 5.4.1f1 (649f48bbbf0f)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GT 730M (ID=0x1290)
+    Vendor:   NVIDIA
+    VRAM:     997 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\OSCsharp.dll (this message is harmless)
+Loading C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\OSCsharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\TUIOsharp.dll (this message is harmless)
+Loading C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\TUIOsharp.dll into Unity Child Domain
+- Completed reload, in  0.064 seconds
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Nikko\Documents\GitHub\MusikPong\MusicPong\Builds\Prototype3_Final\MusicPong_Prototype3_Complete_Final_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.949183 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.920809 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 352.
+Total: 0.896633 ms (FindLiveObjects: 0.025864 ms CreateObjectMapping: 0.022990 ms MarkObjects: 0.240169 ms  DeleteObjects: 0.587902 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.991469 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+
+Unloading 33 unused Assets to reduce memory usage. Loaded Objects now: 345.
+Total: 8.006066 ms (FindLiveObjects: 0.055013 ms CreateObjectMapping: 0.039412 ms MarkObjects: 0.582975 ms  DeleteObjects: 7.327432 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.928656 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 352.
+Total: 0.881853 ms (FindLiveObjects: 0.050086 ms CreateObjectMapping: 0.140406 ms MarkObjects: 0.660569 ms  DeleteObjects: 0.029148 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.029239 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 352.
+Total: 0.706960 ms (FindLiveObjects: 0.057476 ms CreateObjectMapping: 0.040644 ms MarkObjects: 0.587491 ms  DeleteObjects: 0.019706 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.016923 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 352.
+Total: 0.687665 ms (FindLiveObjects: 0.053781 ms CreateObjectMapping: 0.036128 ms MarkObjects: 0.575586 ms  DeleteObjects: 0.020116 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.629367 ms
+[TouchScript] Initialized Windows 8 touch input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+[TouchScript] Initialized Windows 8 mouse input.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 357.
+Total: 0.381808 ms (FindLiveObjects: 0.027096 ms CreateObjectMapping: 0.021348 ms MarkObjects: 0.323100 ms  DeleteObjects: 0.009853 ms)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 9b0 -> priority: 1 
+  Thread -> id: 5a4 -> priority: 1 

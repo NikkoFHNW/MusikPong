@@ -6,6 +6,7 @@ using TouchScript.Behaviors;
 using TouchScript;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class GameController : MonoBehaviour
 
 
 	PressGesture pressG;
+	LongPressGesture lPressG;
 	private bool isPressing = false;
 	private Vector2 pressPos;
 
@@ -72,6 +74,9 @@ public class GameController : MonoBehaviour
 		pressG = GetComponent<PressGesture> ();
 		pressG.Pressed += PressHandler;
 
+		lPressG = GetComponent<LongPressGesture> ();
+		lPressG.LongPressed += LongPressHandler;
+
 
 
 	}
@@ -81,6 +86,8 @@ public class GameController : MonoBehaviour
 	{
 
 		pressG.Pressed -= PressHandler;
+		lPressG.LongPressed -= LongPressHandler;
+
 
 	}
 
@@ -249,6 +256,15 @@ public class GameController : MonoBehaviour
 	
 	}
 
+	void LongPressHandler(object sender, EventArgs e){
+		int x = SceneManager.GetActiveScene ().buildIndex;
+		if (x == SceneManager.sceneCountInBuildSettings - 1)
+			x=0;
+		else
+			x++;
+
+		SceneManager.LoadScene (x);
+	}
 
 
 
